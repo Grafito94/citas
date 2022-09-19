@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <header class="d-flex justify-content-between align-items-center mt-3">
+            <h1>Bienvenid@ {{user.first_name}}</h1>
+            <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
+        </header>
+            <hr>
+        <nav>
+            <a href="/new/appointment" class="btn btn-success">Agregar cita:</a>
+        </nav>
+        <main>
+            <h3>Nuevas citas:</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in citas %}
+                    {% if x.date > dia %}
+
+                    <tr>
+                        <td>{{x.task}}</td>
+                        <td>{{x.date}}</td>
+                        <td>{{x.status}}</td>
+                        <td>
+                            {% if x.status == "Pending" %}
+                            <a href="/edit/cita/{{x.id}}" class="btn btn-primary">Editar</a>
+                            <a href="/delete/cita/{{x.id}}" class="btn btn-danger">Borrar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h3>Citas pasadas:</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cita in citas %}
+                    <tr>
+                        {% if dia >= cita.date %}
+                        <td>{{cita.task}}</td>
+                        <td>{{cita.date}}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>    
+            </table>
+        </main>
+    </div>
+</body>
+</html>
